@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Xiru's Photography Work</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400&family=Noto+Sans+SC:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#fff;--fg:#111;--muted:#aaa;--faint:#e8e8e8;--surface:#f7f7f5;}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--fg);font-family:'DM Sans','Noto Sans SC',sans-serif;font-weight:300;overflow:hidden;}
+.shell{display:flex;flex-direction:column;height:100vh;width:100vw;}
+
+/* NAV */
+.topnav{height:44px;min-height:44px;border-bottom:0.5px solid var(--faint);display:flex;align-items:center;justify-content:space-between;padding:0 3rem;flex-shrink:0;background:var(--bg);z-index:100;}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:0.06em;cursor:pointer;}
+.nav-links{display:flex;gap:3rem;}
+.nav-links a{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);cursor:pointer;text-decoration:none;transition:color 0.2s;padding-bottom:2px;border-bottom:1px solid transparent;}
+.nav-links a:hover{color:#555;}
+.nav-links a.active{color:var(--fg);border-bottom-color:var(--fg);}
+.nav-right{display:flex;align-items:center;gap:1.2rem;}
+.nav-est{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:#ccc;}
+.admin-btn{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;border:0.5px solid var(--faint);padding:5px 12px;cursor:pointer;background:none;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.admin-btn:hover{border-color:#aaa;color:var(--fg);}
+
+.main{flex:1;overflow:hidden;position:relative;}
+.page{display:none;width:100%;height:100%;}
+.page.active{display:flex;}
+
+/* ── HOME ── */
+#p-home{flex-direction:row;}
+.home-left{width:50%;flex-shrink:0;padding:4rem 5rem;display:flex;flex-direction:column;justify-content:space-between;}
+.est-label{font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:#ccc;margin-bottom:2rem;}
+.big-title{font-family:'Bebas Neue',sans-serif;text-transform:uppercase;letter-spacing:0.01em;color:var(--fg);line-height:0.88;}
+.big-title .line{font-size:clamp(52px,6.5vw,88px);display:block;white-space:nowrap;}
+.home-bottom{display:flex;flex-direction:column;gap:0.75rem;}
+.sel-label{font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:#ccc;}
+.enter-link{font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:var(--fg);cursor:pointer;border-bottom:0.5px solid var(--fg);padding-bottom:2px;width:fit-content;transition:opacity 0.2s;}
+.enter-link:hover{opacity:0.4;}
+
+.home-right-wrap{width:50%;flex-shrink:0;border-left:0.5px solid var(--faint);display:flex;flex-direction:row;overflow:hidden;}
+.home-masonry{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:6px;align-content:start;}
+.home-masonry::-webkit-scrollbar{width:0;}
+
+.hp{overflow:hidden;cursor:pointer;position:relative;background:#ebebea;}
+.hp:nth-child(1){height:190px;}
+.hp:nth-child(2){height:130px;margin-top:44px;}
+.hp:nth-child(3){height:145px;}
+.hp:nth-child(4){height:185px;}
+.hp:nth-child(5){height:165px;}
+.hp:nth-child(6){height:125px;margin-top:28px;}
+.hp:nth-child(7){height:150px;}
+.hp:nth-child(8){height:190px;}
+
+.hp-inner{position:absolute;inset:0;transition:transform 0.5s cubic-bezier(.25,.46,.45,.94);}
+.hp:hover .hp-inner{transform:scale(1.05);}
+.hp img{width:100%;height:100%;object-fit:cover;display:block;}
+.hi{position:absolute;bottom:0;left:0;right:0;padding:0.5rem 0.65rem;background:linear-gradient(to top,rgba(0,0,0,0.5),transparent);opacity:0;transition:opacity 0.3s;}
+.hp:hover .hi{opacity:1;}
+.hi-t{font-size:11px;color:#fff;}
+.hi-s{font-size:7px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-top:1px;}
+.hp-placeholder{background:var(--surface);}
+
+.scroll-dots{width:16px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;}
+.sdot{width:4px;height:4px;border-radius:50%;background:#ddd;cursor:pointer;transition:background 0.2s;}
+.sdot.on{background:var(--fg);}
+
+/* ── WORKS ── */
+#p-works{flex-direction:column;}
+.works-bar{border-bottom:0.5px solid var(--faint);padding:0 2.5rem;height:44px;display:flex;align-items:center;gap:2.5rem;flex-shrink:0;}
+.works-bar-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.06em;color:#ddd;margin-right:auto;}
+.fbtn{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;background:none;border:none;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;padding:4px 0;border-bottom:1px solid transparent;transition:all 0.15s;}
+.fbtn:hover{color:#555;}
+.fbtn.on{color:var(--fg);border-bottom-color:var(--fg);}
+.works-scroll{flex:1;overflow-x:auto;overflow-y:hidden;display:flex;gap:2px;padding:2px;background:var(--surface);}
+.works-scroll::-webkit-scrollbar{height:3px;}
+.works-scroll::-webkit-scrollbar-thumb{background:var(--faint);}
+.wi{flex-shrink:0;height:100%;position:relative;overflow:hidden;cursor:pointer;background:#e8e8e6;}
+.wi img{height:100%;width:auto;min-width:180px;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(.25,.46,.45,.94);}
+.wi:hover img{transform:scale(1.03);}
+.wi .meta{position:absolute;bottom:0;left:0;right:0;padding:1.2rem 1rem 0.9rem;background:linear-gradient(to top,rgba(0,0,0,0.55),transparent);opacity:0;transition:opacity 0.3s;}
+.wi:hover .meta{opacity:1;}
+.wi .meta .t{font-size:13px;color:#fff;margin-bottom:3px;}
+.wi .meta .s{font-size:9px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.55);}
+.empty-msg{flex:1;display:flex;align-items:center;justify-content:center;}
+.empty-msg p{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);}
+
+/* ── ABOUT ── */
+#p-about{flex-direction:row;}
+.about-left{width:42%;min-width:42%;border-right:0.5px solid var(--faint);padding:3rem 2.5rem;display:flex;flex-direction:column;justify-content:space-between;}
+.about-left .big{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,7vw,88px);text-transform:uppercase;line-height:0.9;letter-spacing:0.02em;}
+.about-left .big .dim{color:#ddd;}
+.about-tagline{font-size:11px;line-height:2;color:#999;}
+.about-right{flex:1;padding:3rem 2.5rem;display:flex;flex-direction:column;justify-content:space-between;overflow-y:auto;}
+.about-bio{font-size:12px;line-height:2.1;color:#555;margin-bottom:1.5rem;}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.8rem;}
+.tag{font-size:8px;letter-spacing:0.14em;text-transform:uppercase;border:0.5px solid var(--faint);padding:4px 10px;color:#999;}
+.gear-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;border-top:0.5px solid var(--faint);padding-top:1.4rem;}
+.gc .gl{font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:#bbb;margin-bottom:6px;}
+.gc .gv{font-size:11px;line-height:1.9;color:#444;}
+
+/* ── DETAIL ── */
+.detail-overlay{position:fixed;inset:0;background:rgba(255,255,255,0.97);z-index:500;display:none;flex-direction:row;opacity:0;transition:opacity 0.3s;}
+.detail-overlay.open{display:flex;opacity:1;}
+.detail-img-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:var(--surface);overflow:hidden;}
+.detail-img-wrap img{max-width:100%;max-height:100%;object-fit:contain;display:block;}
+.detail-panel{width:300px;min-width:300px;border-left:0.5px solid var(--faint);padding:2.5rem 2rem;display:flex;flex-direction:column;justify-content:space-between;overflow-y:auto;}
+.detail-close{position:absolute;top:1.2rem;right:1.5rem;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;color:var(--muted);border:none;background:none;font-family:'DM Sans',sans-serif;transition:color 0.2s;}
+.detail-close:hover{color:var(--fg);}
+.detail-title{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:0.9;margin-bottom:2rem;letter-spacing:0.03em;}
+.detail-title .dim{color:#ccc;display:block;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:300;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:0.5rem;}
+.detail-rows{display:flex;flex-direction:column;}
+.detail-row{padding:0.9rem 0;border-bottom:0.5px solid var(--faint);display:flex;flex-direction:column;gap:4px;}
+.detail-row:last-child{border-bottom:none;}
+.dr-label{font-size:8px;letter-spacing:0.22em;text-transform:uppercase;color:#bbb;}
+.dr-val{font-size:13px;color:var(--fg);line-height:1.5;}
+.detail-nav{display:flex;gap:1rem;margin-top:2rem;}
+.det-nav-btn{flex:1;padding:8px;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;border:0.5px solid var(--faint);background:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.det-nav-btn:hover{border-color:#aaa;color:var(--fg);}
+
+/* ── ADMIN ── */
+.admin-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:600;display:none;align-items:center;justify-content:center;}
+.admin-overlay.open{display:flex;}
+.admin-panel{background:var(--bg);width:660px;max-width:95vw;max-height:90vh;border:0.5px solid var(--faint);display:flex;flex-direction:column;overflow:hidden;}
+.admin-header{padding:1.5rem 2rem;border-bottom:0.5px solid var(--faint);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.admin-header h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.05em;}
+.admin-x{font-size:18px;cursor:pointer;color:var(--muted);background:none;border:none;transition:color 0.2s;}
+.admin-x:hover{color:var(--fg);}
+.tab-switcher{display:flex;border-bottom:0.5px solid var(--faint);flex-shrink:0;}
+.tab-sw-btn{flex:1;padding:0.85rem;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--muted);border-bottom:1.5px solid transparent;transition:all 0.2s;margin-bottom:-0.5px;}
+.tab-sw-btn.on{color:var(--fg);border-bottom-color:var(--fg);}
+.admin-body{padding:1.5rem 2rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.25rem;flex:1;}
+.admin-tab{display:none;flex-direction:column;gap:1.25rem;}
+.admin-tab.on{display:flex;}
+.conn-indicator{display:flex;align-items:center;gap:8px;font-size:10px;padding:8px 12px;border:0.5px solid var(--faint);background:var(--surface);}
+.cdot{width:7px;height:7px;border-radius:50%;background:#ccc;flex-shrink:0;}
+.cdot.ok{background:#2ecc71;}
+.cdot.err{background:#e74c3c;}
+.upload-zone{border:1px dashed var(--faint);padding:2rem;text-align:center;cursor:pointer;transition:border-color 0.2s;position:relative;}
+.upload-zone:hover,.upload-zone.drag{border-color:#aaa;}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.uz-icon{font-size:26px;margin-bottom:0.6rem;opacity:0.2;}
+.upload-zone p{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.uz-sub{font-size:10px;color:#ccc;margin-top:4px;text-transform:none !important;letter-spacing:0 !important;}
+.preview-strip{display:flex;gap:8px;flex-wrap:wrap;}
+.preview-thumb{width:68px;height:68px;position:relative;overflow:hidden;background:var(--surface);}
+.preview-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.preview-thumb .rm{position:absolute;top:2px;right:2px;width:16px;height:16px;background:rgba(0,0,0,0.5);color:#fff;border:none;cursor:pointer;font-size:9px;display:flex;align-items:center;justify-content:center;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;}
+.form-group{display:flex;flex-direction:column;gap:5px;}
+.form-group label{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#bbb;}
+.form-group input,.form-group select{border:0.5px solid var(--faint);padding:9px 12px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:300;color:var(--fg);background:var(--bg);outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
+.form-group input:focus,.form-group select:focus{border-color:#aaa;}
+.admin-submit{width:100%;padding:11px;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;background:var(--fg);color:var(--bg);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity 0.2s;}
+.admin-submit:hover{opacity:0.7;}
+.admin-submit:disabled{opacity:0.3;cursor:not-allowed;}
+.progress-wrap{display:none;flex-direction:column;gap:6px;}
+.progress-wrap.show{display:flex;}
+.progress-bar-bg{height:2px;background:var(--faint);width:100%;}
+.progress-bar-fill{height:2px;background:var(--fg);width:0%;transition:width 0.3s;}
+.progress-label{font-size:10px;color:var(--muted);letter-spacing:0.1em;}
+.admin-list{display:flex;flex-direction:column;}
+.admin-list-header{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#bbb;padding-bottom:0.75rem;border-bottom:0.5px solid var(--faint);}
+.admin-item{display:flex;align-items:center;gap:1rem;padding:0.75rem 0;border-bottom:0.5px solid var(--faint);}
+.admin-item:last-child{border-bottom:none;}
+.admin-item-thumb{width:48px;height:48px;overflow:hidden;flex-shrink:0;background:var(--surface);}
+.admin-item-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.admin-item-info{flex:1;min-width:0;}
+.ai-title{font-size:12px;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ai-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+.admin-item-del{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#ccc;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;flex-shrink:0;transition:color 0.2s;padding:4px 8px;}
+.admin-item-del:hover{color:#e05;}
+.settings-section{display:flex;flex-direction:column;gap:0.75rem;}
+.ss-title{font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:#bbb;border-bottom:0.5px solid var(--faint);padding-bottom:0.5rem;}
+.settings-section input{border:0.5px solid var(--faint);padding:9px 12px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:300;color:var(--fg);background:var(--bg);outline:none;transition:border-color 0.2s;width:100%;}
+.settings-section input:focus{border-color:#aaa;}
+.settings-note{font-size:10px;color:#bbb;line-height:1.7;}
+.settings-save{padding:9px 24px;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;background:var(--fg);color:var(--bg);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity 0.2s;}
+.settings-save:hover{opacity:0.7;}
+.settings-save.sec{background:var(--surface);color:var(--fg);border:0.5px solid var(--faint);}
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--fg);color:var(--bg);padding:10px 24px;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;opacity:0;transition:all 0.3s;pointer-events:none;z-index:999;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="topnav">
+    <div class="nav-logo" onclick="gp('home')">Xiru's Photography</div>
+    <div class="nav-links">
+      <a class="active" onclick="gp('home',this)">Home</a>
+      <a onclick="gp('works',this)">Works</a>
+      <a onclick="gp('about',this)">About</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-est">Est. 2026</div>
+      <button class="admin-btn" onclick="openAdmin()">⚙ 管理照片</button>
+    </div>
+  </nav>
+  <div class="main">
+
+    <!-- HOME -->
+    <div id="p-home" class="page active">
+      <div class="home-left">
+        <div>
+          <div class="est-label">Established / 2026</div>
+          <div class="big-title">
+            <span class="line">Xiru's</span>
+            <span class="line">Photography</span>
+          </div>
+        </div>
+        <div class="home-bottom">
+          <div class="sel-label">Selected Highlights</div>
+          <div class="enter-link" onclick="gp('works',document.querySelectorAll('.nav-links a')[1])">Enter Gallery →</div>
+        </div>
+      </div>
+      <div class="home-right-wrap">
+        <div class="home-masonry" id="home-masonry"></div>
+        <div class="scroll-dots" id="scroll-dots">
+          <div class="sdot on"></div>
+          <div class="sdot"></div>
+          <div class="sdot"></div>
+          <div class="sdot"></div>
+          <div class="sdot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKS -->
+    <div id="p-works" class="page">
+      <div class="works-bar">
+        <div class="works-bar-title">Works</div>
+        <button class="fbtn on" onclick="wf(this,'all')">All</button>
+        <button class="fbtn" onclick="wf(this,'city')">City</button>
+        <button class="fbtn" onclick="wf(this,'life')">Life</button>
+        <button class="fbtn" onclick="wf(this,'travel')">Travel</button>
+        <button class="fbtn" onclick="wf(this,'nature')">Nature</button>
+        <button class="fbtn" onclick="wf(this,'portrait')">Portrait</button>
+      </div>
+      <div class="works-scroll" id="works-scroll"></div>
+    </div>
+
+    <!-- ABOUT -->
+    <div id="p-about" class="page">
+      <div class="about-left">
+        <div class="big">About<br><span class="dim">Me.</span></div>
+        <div class="about-tagline">Capturing life, light,<br>and little joys<br>in everyday moments.</div>
+      </div>
+      <div class="about-right">
+        <div>
+          <p class="about-bio">A photographer exploring visual storytelling with curiosity and care. This website is a personal archive — a place to record, organize, and share photographs. Click any photo to see location, date, equipment, and more.</p>
+          <div class="tags">
+            <div class="tag">Outdoors</div><div class="tag">Street</div>
+            <div class="tag">Film photography</div><div class="tag">Color grading</div><div class="tag">Travel</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div class="detail-overlay" id="detail-overlay">
+  <button class="detail-close" onclick="closeDetail()">✕ Close</button>
+  <div class="detail-img-wrap"><img id="detail-img" src="" alt=""/></div>
+  <div class="detail-panel">
+    <div>
+      <div class="detail-title"><span class="dim" id="detail-cat"></span><span id="detail-name"></span></div>
+      <div class="detail-rows">
+        <div class="detail-row"><div class="dr-label">📍 地点</div><div class="dr-val" id="detail-loc">—</div></div>
+        <div class="detail-row"><div class="dr-label">📅 时间</div><div class="dr-val" id="detail-date">—</div></div>
+        <div class="detail-row"><div class="dr-label">📷 器材</div><div class="dr-val" id="detail-gear">—</div></div>
+        <div class="detail-row"><div class="dr-label">💬 备注</div><div class="dr-val" id="detail-note">—</div></div>
+      </div>
+    </div>
+    <div class="detail-nav">
+      <button class="det-nav-btn" onclick="detailNav(-1)">← Prev</button>
+      <button class="det-nav-btn" onclick="detailNav(1)">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-overlay" id="admin-overlay" onclick="overlayClick(event)">
+  <div class="admin-panel">
+    <div class="admin-header"><h3>管理照片</h3><button class="admin-x" onclick="closeAdmin()">✕</button></div>
+    <div class="tab-switcher">
+      <button class="tab-sw-btn on" onclick="switchAdminTab('upload',this)">上传照片</button>
+      <button class="tab-sw-btn" onclick="switchAdminTab('list',this)">照片列表</button>
+      <button class="tab-sw-btn" onclick="switchAdminTab('settings',this)">⚙ 设置</button>
+    </div>
+    <div class="admin-body">
+      <div id="atab-upload" class="admin-tab on">
+        <div class="conn-indicator"><div class="cdot" id="conn-dot"></div><span id="conn-text">未配置 GitHub — 请先前往「设置」填写信息</span></div>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="file-input" accept="image/*" multiple onchange="handleFiles(this.files)"/>
+          <div class="uz-icon">+</div>
+          <p>点击或拖拽上传照片</p>
+          <p class="uz-sub">支持 JPG、PNG、WEBP，可多选</p>
+        </div>
+        <div class="preview-strip" id="preview-strip"></div>
+        <div class="form-row">
+          <div class="form-group"><label>照片标题</label><input type="text" id="f-title" placeholder="例：晨雾祁连"/></div>
+          <div class="form-group"><label>分类</label>
+            <select id="f-cat">
+              <option value="city">City 城市</option><option value="life">Life 日常</option>
+              <option value="travel">Travel 旅途</option><option value="nature">Nature 自然</option>
+              <option value="portrait">Portrait 人像</option>
+            </select>
+          </div>
+          <div class="form-group"><label>📍 拍摄地点</label><input type="text" id="f-loc" placeholder="例：云南·大理"/></div>
+          <div class="form-group"><label>📅 拍摄时间</label><input type="date" id="f-date"/></div>
+          <div class="form-group"><label>📷 器材</label><input type="text" id="f-gear" placeholder="例：Fujifilm X-M5"/></div>
+          <div class="form-group"><label>备注</label><input type="text" id="f-note" placeholder="可选"/></div>
+        </div>
+        <div class="progress-wrap" id="progress-wrap">
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
+          <div class="progress-label" id="progress-label">上传中...</div>
+        </div>
+        <button class="admin-submit" id="submit-btn" onclick="addPhoto()">上传到 GitHub</button>
+      </div>
+      <div id="atab-list" class="admin-tab">
+        <div class="admin-list" id="admin-list"><div class="admin-list-header">全部照片</div></div>
+      </div>
+      <div id="atab-settings" class="admin-tab">
+        <div class="settings-section">
+          <div class="ss-title">GitHub 仓库配置</div>
+          <div class="form-row" style="gap:0.75rem;">
+            <div class="form-group"><label>GitHub 用户名</label><input type="text" id="cfg-user" placeholder="your-username"/></div>
+            <div class="form-group"><label>仓库名称</label><input type="text" id="cfg-repo" placeholder="xiru-photography"/></div>
+          </div>
+          <div class="form-group"><label>Personal Access Token</label><input type="password" id="cfg-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"/></div>
+          <p class="settings-note">Token 需勾选 <strong>repo</strong> 权限。获取：GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token</p>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+            <button class="settings-save" onclick="saveConfig()">保存配置</button>
+            <button class="settings-save sec" onclick="testConnection()">测试连接</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CFG_KEY='xiru_gh_config';
+let cfg=JSON.parse(localStorage.getItem(CFG_KEY)||'{}');
+let photos=[],pendingFiles=[],currentDetailIdx=0;
+
+function saveConfig(){
+  cfg={user:document.getElementById('cfg-user').value.trim(),repo:document.getElementById('cfg-repo').value.trim(),token:document.getElementById('cfg-token').value.trim()};
+  if(!cfg.user||!cfg.repo||!cfg.token){showToast('请填写所有字段');return;}
+  localStorage.setItem(CFG_KEY,JSON.stringify(cfg));showToast('配置已保存');updateConnStatus();
+}
+function loadConfigFields(){
+  if(cfg.user)document.getElementById('cfg-user').value=cfg.user;
+  if(cfg.repo)document.getElementById('cfg-repo').value=cfg.repo;
+  if(cfg.token)document.getElementById('cfg-token').value=cfg.token;
+}
+function isConfigured(){return !!(cfg.user&&cfg.repo&&cfg.token);}
+function updateConnStatus(){
+  const dot=document.getElementById('conn-dot'),txt=document.getElementById('conn-text');
+  if(!isConfigured()){dot.className='cdot';txt.textContent='未配置 GitHub — 请先前往「设置」填写信息';}
+  else{dot.className='cdot ok';txt.textContent=`已连接：${cfg.user}/${cfg.repo}`;}
+}
+async function testConnection(){
+  if(!isConfigured()){showToast('请先填写配置');return;}
+  showToast('测试连接中...');
+  try{const r=await ghGet(`repos/${cfg.user}/${cfg.repo}`);showToast('✓ 连接成功：'+r.full_name);document.getElementById('conn-dot').className='cdot ok';}
+  catch{showToast('连接失败，请检查 Token 和仓库名');document.getElementById('conn-dot').className='cdot err';}
+}
+
+const GH='https://api.github.com';
+async function ghGet(p){const r=await fetch(`${GH}/${p}`,{headers:{Authorization:`Bearer ${cfg.token}`,Accept:'application/vnd.github+json'}});if(!r.ok)throw new Error(r.status);return r.json();}
+async function ghPut(p,body){const r=await fetch(`${GH}/${p}`,{method:'PUT',headers:{Authorization:`Bearer ${cfg.token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){const e=await r.json();throw new Error(e.message||r.status);}return r.json();}
+async function ghDel(p,sha,msg){const r=await fetch(`${GH}/${p}`,{method:'DELETE',headers:{Authorization:`Bearer ${cfg.token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify({message:msg,sha})});if(!r.ok)throw new Error(r.status);return r.json();}
+async function getFileSha(p){try{const r=await ghGet(`repos/${cfg.user}/${cfg.repo}/contents/${p}`);return r.sha;}catch{return null;}}
+
+async function loadPhotos(){
+  if(!isConfigured())return;
+  try{const r=await ghGet(`repos/${cfg.user}/${cfg.repo}/contents/photos.json`);photos=JSON.parse(atob(r.content.replace(/\n/g,'')));}
+  catch{photos=[];}
+  renderHome();renderWorks('all');
+}
+async function savePhotos(){
+  const content=btoa(unescape(encodeURIComponent(JSON.stringify(photos,null,2))));
+  const sha=await getFileSha('photos.json');
+  await ghPut(`repos/${cfg.user}/${cfg.repo}/contents/photos.json`,{message:'Update photos.json',content,...(sha&&{sha})});
+}
+
+function gp(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p-'+name).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  if(el)el.classList.add('active');
+  else{const m={home:0,works:1,about:2};if(m[name]!==undefined)document.querySelectorAll('.nav-links a')[m[name]].classList.add('active');}
+  if(name==='works')renderWorks('all');
+  if(name==='home')renderHome();
+}
+
+const hPattern=[[190,130],[145,185],[165,125],[150,190],[175,115],[140,170]];
+const mtPattern=[0,44,0,0,0,28,0,0];
+
+function renderHome(){
+  const m=document.getElementById('home-masonry');
+  const list=photos.slice(-8).reverse();
+  if(!list.length){
+    m.innerHTML=`<div style="grid-column:span 2;display:flex;align-items:center;justify-content:center;height:200px;color:#ccc;font-size:9px;letter-spacing:0.15em;text-transform:uppercase;">上传照片后显示</div>`;
+    initScrollDots();return;
+  }
+  m.innerHTML=list.map((p,i)=>{
+    const h=hPattern[i%hPattern.length][i%2];
+    const mt=mtPattern[i]?`margin-top:${mtPattern[i]}px;`:'';
+    return `<div class="hp" style="height:${h}px;${mt}" onclick="openDetail(${photos.indexOf(p)})">
+      <div class="hp-inner"><img src="${p.url}" alt="${p.title}"/></div>
+      <div class="hi"><div class="hi-t">${p.title||'未命名'}</div><div class="hi-s">${p.loc||''}</div></div>
+    </div>`;
+  }).join('');
+  initScrollDots();
+}
+
+function initScrollDots(){
+  const m=document.getElementById('home-masonry');
+  const dots=document.querySelectorAll('#scroll-dots .sdot');
+  m.onscroll=()=>{
+    const pct=m.scrollTop/(m.scrollHeight-m.clientHeight||1);
+    const idx=Math.min(Math.round(pct*(dots.length-1)),dots.length-1);
+    dots.forEach((d,i)=>d.classList.toggle('on',i===idx));
+  };
+  dots.forEach((d,i)=>d.onclick=()=>{
+    m.scrollTo({top:(i/(dots.length-1))*(m.scrollHeight-m.clientHeight),behavior:'smooth'});
+  });
+}
+
+function renderWorks(cat){
+  const scroll=document.getElementById('works-scroll');
+  const list=cat==='all'?photos:photos.filter(p=>p.cat===cat);
+  if(!list.length){scroll.innerHTML=`<div class="empty-msg"><p>${cat==='all'?'还没有照片，点击右上角「管理照片」上传':'该分类暂无照片'}</p></div>`;return;}
+  scroll.innerHTML=list.map(p=>`
+    <div class="wi" onclick="openDetail(${photos.indexOf(p)})">
+      <img src="${p.url}" alt="${p.title}"/>
+      <div class="meta"><div class="t">${p.title||'未命名'}</div><div class="s">${p.loc||''}${p.loc&&p.date?' · ':''}${p.date?p.date.substring(0,7):''}</div></div>
+    </div>`).join('');
+}
+function wf(btn,cat){document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderWorks(cat);}
+
+function openDetail(idx){
+  currentDetailIdx=idx;showDetail(idx);
+  const ov=document.getElementById('detail-overlay');
+  ov.style.display='flex';requestAnimationFrame(()=>ov.classList.add('open'));
+}
+function showDetail(idx){
+  const p=photos[idx];if(!p)return;currentDetailIdx=idx;
+  document.getElementById('detail-img').src=p.url;
+  document.getElementById('detail-name').textContent=p.title||'未命名';
+  document.getElementById('detail-cat').textContent=p.cat?p.cat.toUpperCase():'';
+  document.getElementById('detail-loc').textContent=p.loc||'—';
+  document.getElementById('detail-date').textContent=p.date?formatDate(p.date):'—';
+  document.getElementById('detail-gear').textContent=p.gear||'—';
+  document.getElementById('detail-note').textContent=p.note||'—';
+}
+function formatDate(d){if(!d)return'—';const p=d.split('-');return p.length===3?`${p[0]} 年 ${p[1]} 月 ${p[2]} 日`:d;}
+function closeDetail(){const ov=document.getElementById('detail-overlay');ov.classList.remove('open');setTimeout(()=>{ov.style.display='none';},300);}
+function detailNav(dir){const n=currentDetailIdx+dir;if(n>=0&&n<photos.length)showDetail(n);}
+document.addEventListener('keydown',e=>{
+  const ov=document.getElementById('detail-overlay');if(!ov.classList.contains('open'))return;
+  if(e.key==='Escape')closeDetail();if(e.key==='ArrowRight')detailNav(1);if(e.key==='ArrowLeft')detailNav(-1);
+});
+
+function openAdmin(){document.getElementById('admin-overlay').classList.add('open');loadConfigFields();updateConnStatus();loadPhotos().then(()=>renderAdminList());}
+function closeAdmin(){document.getElementById('admin-overlay').classList.remove('open');}
+function overlayClick(e){if(e.target===document.getElementById('admin-overlay'))closeAdmin();}
+function switchAdminTab(tab,btn){
+  document.querySelectorAll('.tab-sw-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');document.getElementById('atab-'+tab).classList.add('on');
+  if(tab==='list')renderAdminList();
+}
+
+function handleFiles(files){
+  Array.from(files).forEach(file=>{const reader=new FileReader();reader.onload=e=>{pendingFiles.push({file,dataUrl:e.target.result});renderPreviews();};reader.readAsDataURL(file);});
+}
+function renderPreviews(){document.getElementById('preview-strip').innerHTML=pendingFiles.map((f,i)=>`<div class="preview-thumb"><img src="${f.dataUrl}"/><button class="rm" onclick="removePending(${i})">✕</button></div>`).join('');}
+function removePending(i){pendingFiles.splice(i,1);renderPreviews();}
+const uz=document.getElementById('upload-zone');
+uz.addEventListener('dragover',e=>{e.preventDefault();uz.classList.add('drag');});
+uz.addEventListener('dragleave',()=>uz.classList.remove('drag'));
+uz.addEventListener('drop',e=>{e.preventDefault();uz.classList.remove('drag');handleFiles(e.dataTransfer.files);});
+
+async function addPhoto(){
+  if(!isConfigured()){showToast('请先在「设置」中填写 GitHub 配置');switchAdminTab('settings',document.querySelectorAll('.tab-sw-btn')[2]);return;}
+  if(!pendingFiles.length){showToast('请先选择照片');return;}
+  const btn=document.getElementById('submit-btn'),pw=document.getElementById('progress-wrap'),pf=document.getElementById('progress-fill'),pl=document.getElementById('progress-label');
+  btn.disabled=true;pw.classList.add('show');
+  const title=document.getElementById('f-title').value.trim(),cat=document.getElementById('f-cat').value,
+        loc=document.getElementById('f-loc').value.trim(),date=document.getElementById('f-date').value,
+        gear=document.getElementById('f-gear').value.trim(),note=document.getElementById('f-note').value.trim();
+  try{
+    for(let i=0;i<pendingFiles.length;i++){
+      const pf_=pendingFiles[i];
+      pf.style.width=Math.round(((i+0.5)/pendingFiles.length)*100)+'%';
+      pl.textContent=`上传中 ${i+1}/${pendingFiles.length}...`;
+      const base64=pf_.dataUrl.split(',')[1];
+      const ext=pf_.file.name.split('.').pop()||'jpg';
+      const fname=`photos/${Date.now()}_${i}.${ext}`;
+      await ghPut(`repos/${cfg.user}/${cfg.repo}/contents/${fname}`,{message:`Add photo: ${title||pf_.file.name}`,content:base64});
+      photos.push({id:Date.now()+i,url:`https://raw.githubusercontent.com/${cfg.user}/${cfg.repo}/main/${fname}`,ghPath:fname,title:title||pf_.file.name.replace(/\.[^.]+$/,''),cat,loc,date,gear,note});
+    }
+    pf.style.width='90%';pl.textContent='更新索引...';
+    await savePhotos();
+    pf.style.width='100%';pl.textContent='完成！';
+    setTimeout(()=>{pw.classList.remove('show');pf.style.width='0%';},1500);
+    pendingFiles=[];renderPreviews();
+    ['f-title','f-loc','f-date','f-gear','f-note'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('file-input').value='';
+    renderHome();renderWorks('all');showToast('✓ 照片已上传到 GitHub');
+  }catch(e){pw.classList.remove('show');showToast('上传失败：'+e.message);console.error(e);}
+  btn.disabled=false;
+}
+
+function renderAdminList(){
+  const list=document.getElementById('admin-list');
+  if(!photos.length){list.innerHTML='<div class="admin-list-header">全部照片</div><p style="font-size:10px;color:#bbb;padding:2rem 0;text-align:center;letter-spacing:0.1em;text-transform:uppercase;">暂无照片</p>';return;}
+  list.innerHTML=`<div class="admin-list-header">全部照片（${photos.length}）</div>`+
+    [...photos].reverse().map(p=>`<div class="admin-item"><div class="admin-item-thumb"><img src="${p.url}" onerror="this.style.opacity=0.2"/></div><div class="admin-item-info"><div class="ai-title">${p.title||'未命名'}</div><div class="ai-sub">${p.cat||''} ${p.loc?'· '+p.loc:''} ${p.date?'· '+p.date.substring(0,7):''}</div></div><button class="admin-item-del" onclick="deletePhoto(${p.id})">删除</button></div>`).join('');
+}
+async function deletePhoto(id){
+  if(!confirm('确定删除这张照片？'))return;
+  const p=photos.find(x=>x.id===id);if(!p)return;
+  showToast('删除中...');
+  try{
+    if(p.ghPath){const sha=await getFileSha(p.ghPath);if(sha)await ghDel(`repos/${cfg.user}/${cfg.repo}/contents/${p.ghPath}`,sha,`Delete photo: ${p.title}`);}
+    photos=photos.filter(x=>x.id!==id);await savePhotos();renderAdminList();renderHome();renderWorks('all');showToast('已删除');
+  }catch(e){showToast('删除失败：'+e.message);}
+}
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+
+updateConnStatus();
+if(isConfigured())loadPhotos();
+else renderHome();
+</script>
+</body>
+</html>
